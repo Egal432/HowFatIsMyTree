@@ -10,3 +10,6 @@ python preprocess_ecosense.py \
   out/ecosense \
   --tile-size 50 \
   --search-radius 1.0
+
+  workflow: wsl -> conda activate uavproc_gpu
+  

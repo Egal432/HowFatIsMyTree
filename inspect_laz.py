@@ -178,10 +178,12 @@ def _check_z_normalization(z: np.ndarray):
         looks_normalized = False
 
     if zmin < -50:
-        reasons.append("min is very negative (unlikely for normalized heights)")
+        reasons.append(
+            "min is very negative (unlikely for normalized heights)")
         looks_normalized = False
 
-    print("Heuristic verdict  :", "LIKELY normalized heights" if looks_normalized else "LIKELY absolute elevation")
+    print("Heuristic verdict  :",
+          "LIKELY normalized heights" if looks_normalized else "LIKELY absolute elevation")
     if reasons:
         print("Reasons            :", "; ".join(reasons))
     print()
@@ -201,7 +203,8 @@ def _suggest_segmentation_fields(las):
                 continue
             print(f"\n-- {n} ({info['dtype']}) --")
             if info["min"] is not None:
-                print(f"min/max/mean    : {info['min']:.3f} / {info['max']:.3f} / {info['mean']:.3f}")
+                print(
+                    f"min/max/mean    : {info['min']:.3f} / {info['max']:.3f} / {info['mean']:.3f}")
             if info["unique_est"] is not None:
                 print(f"unique (approx) : {info['unique_est']}")
             if info["top"] is not None:
@@ -245,7 +248,8 @@ def _suggest_segmentation_fields(las):
         likely.sort(key=lambda x: x[1], reverse=True)
         print("Possible ID-like dimensions (sorted by unique count):")
         for n, u, mn, mx, top in likely[:15]:
-            print(f"- {n:25s} unique≈{u:8d}  min={mn}  max={mx}  top={top[:5] if top else None}")
+            print(
+                f"- {n:25s} unique≈{u:8d}  min={mn}  max={mx}  top={top[:5] if top else None}")
         print("\nTip: segmentation often has ~#trees unique values (e.g. 1500).")
         print("Pick a field whose unique count is close to your expected number of trees.")
     else:
