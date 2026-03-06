@@ -209,5 +209,5 @@ __marimo__/
 # datasets
 
 datasets/
-*.laz
+
 out/
