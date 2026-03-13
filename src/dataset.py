@@ -4,6 +4,7 @@ from typing import Dict, List
 
 import numpy as np
 import torch
+import torch.multiprocessing as mp
 from torch.utils.data import Dataset
 
 from config import DataConfig
@@ -35,6 +36,14 @@ class TreeDbhDataset(Dataset):
         self.cfg = cfg
         self.augment = augment
         self.rng = np.random.default_rng(seed)
+        print(f"Pre-caching {len(self.samples)} point clouds into RAM...")
+        self._xyz_cache = {}
+        for s in self.samples:
+            xyz = read_laz_xyz(s["tree_path"])
+            # Move to shared memory so worker processes can access without copying
+            t = torch.from_numpy(xyz).share_memory_()
+            self._xyz_cache[str(s["tree_path"])] = t
+        print("Done.")
 
         if len(self.samples) == 0:
             raise RuntimeError("Dataset received zero samples.")
@@ -46,7 +55,8 @@ class TreeDbhDataset(Dataset):
         sample = self.samples[idx]
         tree_path = sample["tree_path"]
 
-        xyz_abs = read_laz_xyz(tree_path)
+        xyz_abs = self._xyz_cache[str(tree_path)].numpy()
+
         if xyz_abs.shape[0] == 0:
             raise ValueError(f"Empty point cloud in file: {tree_path}")
 
@@ -90,17 +100,18 @@ class TreeDbhDataset(Dataset):
             bh_mask=bh_mask,
             max_points=self.cfg.max_points,
             bh_fraction_cap=self.cfg.bh_fraction_cap,
-            rng=self.rng,
+            rng=self.rng,   # <--- This argument must match!
         )
-
         sampled_bh_mask = bh_mask[sampled_idx]
 
         flip_x = False
         flip_y = False
 
         if self.augment:
-            flip_x = self.cfg.enable_flip_x and (self.rng.random() < self.cfg.p_flip_x)
-            flip_y = self.cfg.enable_flip_y and (self.rng.random() < self.cfg.p_flip_y)
+            flip_x = self.cfg.enable_flip_x and (
+                self.rng.random() < self.cfg.p_flip_x)
+            flip_y = self.cfg.enable_flip_y and (
+                self.rng.random() < self.cfg.p_flip_y)
 
             sampled_features, target = apply_xy_flips(
                 features=sampled_features,

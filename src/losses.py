@@ -9,17 +9,13 @@ class CoupledXYDbhLoss(nn.Module):
     total = xy_weight * mean(dx^2 + dy^2) + dbh_weight * SmoothL1(dbh)
     """
 
-    def __init__(
-        self,
-        xy_weight: float = 1.0,
-        dbh_weight: float = 1.0,
-        smooth_l1_beta: float = 1.0,
-    ) -> None:
+    def __init__(self, xy_weight=1.0, dbh_weight=1.0, smooth_l1_beta=1.0):
         super().__init__()
         self.xy_weight = float(xy_weight)
         self.dbh_weight = float(dbh_weight)
+        self.smooth_l1_beta = float(smooth_l1_beta)  # add this line
         self.dbh_loss_fn = nn.SmoothL1Loss(reduction="mean", beta=smooth_l1_beta)
-
+        
     def forward(self, pred: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
         dx = pred[:, 0] - target[:, 0]
         dy = pred[:, 1] - target[:, 1]

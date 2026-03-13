@@ -13,3 +13,12 @@ python preprocess_ecosense.py \
 
   workflow: wsl -> conda activate uavproc_gpu
   
+  What was the process until now? 
+
+  python step1 - step 3 for segmented cloud
+  use R for resegmentation (TreeSeg_Csp.R)
+
+
+  next steps: 
+  confirm clouds are proper
+  

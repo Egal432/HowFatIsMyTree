@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Tuple
-
+from typing import Tuple, Optional
 import laspy
 import numpy as np
+import torch
+
+# --- Helper Functions (Unchanged) ---
 
 
 def read_laz_xyz(path: Path) -> np.ndarray:
@@ -62,13 +64,32 @@ def build_point_features(
     return np.concatenate(feats, axis=1).astype(np.float32)
 
 
-def sample_points_bh_aware(
+def extract_predinstance_from_filename(path: Path) -> str:
+    # Correct based on your previous context
+    return path.stem
+
+# --- Sampling Logic ---
+
+
+def sample_points_bh_aware(features, bh_mask, max_points, bh_fraction_cap=0.5, rng=None):
+    if rng is None:
+        rng = np.random.default_rng()
+    n = features.shape[0]
+    idx = rng.choice(n, size=min(n, max_points), replace=n < max_points)
+    if len(idx) < max_points:
+        pad = rng.choice(n, size=max_points - len(idx), replace=True)
+        idx = np.concatenate([idx, pad])
+    return features[idx[:max_points]], idx[:max_points].astype(np.int64)
+
+
+def sample_points_random(
     features: np.ndarray,
     bh_mask: np.ndarray,
     max_points: int,
     bh_fraction_cap: float = 0.5,
     rng: np.random.Generator | None = None,
 ):
+    """Fallback or default random sampling"""
     if rng is None:
         rng = np.random.default_rng()
 
@@ -78,21 +99,19 @@ def sample_points_bh_aware(
     non_bh_idx = all_idx[~bh_mask]
 
     bh_cap = int(round(max_points * bh_fraction_cap))
-
     if len(bh_idx) <= bh_cap:
         chosen_bh = bh_idx
     else:
         chosen_bh = rng.choice(bh_idx, size=bh_cap, replace=False)
 
     remaining = max_points - len(chosen_bh)
-
     if remaining > 0:
         if len(non_bh_idx) >= remaining:
-            chosen_non_bh = rng.choice(non_bh_idx, size=remaining, replace=False)
-        elif len(non_bh_idx) > 0:
-            chosen_non_bh = rng.choice(non_bh_idx, size=remaining, replace=True)
+            chosen_non_bh = rng.choice(
+                non_bh_idx, size=remaining, replace=False)
         else:
-            chosen_non_bh = np.array([], dtype=np.int64)
+            chosen_non_bh = rng.choice(
+                non_bh_idx, size=remaining, replace=True)
     else:
         chosen_non_bh = np.array([], dtype=np.int64)
 
@@ -101,9 +120,6 @@ def sample_points_bh_aware(
     if len(chosen) < max_points:
         pad = rng.choice(all_idx, size=max_points - len(chosen), replace=True)
         chosen = np.concatenate([chosen, pad])
-
-    if len(chosen) > max_points:
-        chosen = rng.choice(chosen, size=max_points, replace=False)
 
     rng.shuffle(chosen)
     return features[chosen], chosen.astype(np.int64)
@@ -136,7 +152,3 @@ def recover_absolute_xy(
     origin_y: float,
 ):
     return x_local_pred + origin_x, y_local_pred + origin_y
-
-
-def extract_predinstance_from_filename(path: Path) -> str:
-    return path.stem.split("_")[-1]

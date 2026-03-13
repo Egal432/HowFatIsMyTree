@@ -8,8 +8,8 @@ class DataConfig:
     # -------------------------
     # Training dataset
     # -------------------------
-    train_trees_dir: Path = Path("TestTrees/Trees")
-    train_labels_csv: Path = Path("TestTrees/labels.csv")
+    train_trees_dir: Path = Path("out/ecosense/final_trees")
+    train_labels_csv: Path = Path("out/ecosense/final_trees.csv")
 
     # -------------------------
     # Optional external test dataset
@@ -20,7 +20,7 @@ class DataConfig:
     # -------------------------
     # Label columns
     # -------------------------
-    id_col: str = "PredInstance"
+    id_col: str = "full_id"
     x_col: str = "x"
     y_col: str = "y"
     dbh_col: str = "diameter_m"
@@ -28,7 +28,7 @@ class DataConfig:
     # -------------------------
     # Point features
     # -------------------------
-    use_is_bh_window: bool = True
+    use_is_bh_window: bool = False
 
     # -------------------------
     # Ground normalization
@@ -47,7 +47,7 @@ class DataConfig:
     # -------------------------
     # Sampling
     # -------------------------
-    max_points: int = 1024
+    max_points: int = 4096
     bh_fraction_cap: float = 0.5
 
     # -------------------------
@@ -67,39 +67,39 @@ class DataConfig:
     # -------------------------
     # Cross-validation
     # -------------------------
-    n_splits: int = 5
+    n_splits: int = 10
     cv_seed: int = 42
     shuffle_folds: bool = True
 
 
-
 @dataclass
 class ModelConfig:
-    model_name: str = "pointnet_original_light"
+    model_name: str = "pointnet_conv"
     in_channels: int = 4
     out_channels: int = 3
 
-    pointnet_feat_dims: list[int] = field(default_factory=lambda: [64, 64, 64, 128, 1024])
+    pointnet_feat_dims: list[int] = field(
+        default_factory=lambda: [64, 64, 64, 128, 1024])
     pointnet_head_dims: list[int] = field(default_factory=lambda: [512, 256])
     pointnet_dropout: float = 0.3
     pointnet_use_bn: bool = True
     pointnet_use_input_transform: bool = False
     pointnet_use_feature_transform: bool = False
 
-    pointconv_hidden_dim: int = 64
-    pointconv_layers: int = 2
-    pointconv_k: int = 16
-    pointconv_dropout: float = 0.3
+    pointconv_hidden_dim: int = 128
+    pointconv_layers: int = 3
+    pointconv_k: int = 32
+    pointconv_dropout: float = 0.1
     pointconv_use_bn: bool = True
-    pointconv_head_dims: list[int] = field(default_factory=lambda: [128, 64])
+    pointconv_head_dims: list[int] = field(default_factory=lambda: [256, 128])
 
 
 @dataclass
 class TrainConfig:
     output_dir: Path = Path("outputs/default_run")
-    batch_size: int = 8
-    num_workers: int = 0
-    epochs: int = 30
+    batch_size: int = 32
+    num_workers: int = 16
+    epochs: int = 500
     lr: float = 1e-3
     weight_decay: float = 1e-4
     seed: int = 42
@@ -112,15 +112,18 @@ class TrainConfig:
 
     # logging
     use_wandb: bool = True
-    wandb_project: str = "tree_dbh"
-    wandb_entity: Optional[str] = None
-    wandb_run_name: Optional[str] = None
+    wandb_project: str = "tree_dbh_workstation"
+    wandb_entity: Optional[str] = "skreidl"
+    wandb_run_name: Optional[str] = "dirty_run_bigguns_lite"
     wandb_tags: list[str] = field(default_factory=list)
     wandb_mode: str = "online"   # "online", "offline", "disabled"
-    wandb_watch_model: bool = False
+    wandb_watch_model: bool = True
 
     save_history: bool = True
     save_best_model: bool = True
+
+    # early stopping
+    early_stopping_patience: int = 30  # stop if val_loss doesn't improve for N epochs
 
 
 @dataclass

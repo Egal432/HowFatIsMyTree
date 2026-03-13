@@ -1,0 +1,39 @@
+{
+  "os": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39",
+  "python": "CPython 3.11.14",
+  "startedAt": "2026-03-11T15:26:11.923353Z",
+  "program": "/mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree/src/train.py",
+  "codePath": "src/train.py",
+  "codePathLocal": "src/train.py",
+  "git": {
+    "remote": "git@github.com:Egal432/HowFatIsMyTree.git",
+    "commit": "cd2fd35b87080a050e6db90d9505f6df86187939"
+  },
+  "email": "stephan.kreidl.1999@googlemail.com",
+  "root": "/mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree",
+  "host": "IWW156",
+  "executable": "/home/humax_laserscan/miniconda/envs/uavproc_gpu/bin/python",
+  "cpu_count": 16,
+  "cpu_count_logical": 32,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1081101176832",
+      "used": "24388788224"
+    }
+  },
+  "memory": {
+    "total": "67345616896"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4090",
+      "memoryTotal": "25757220864",
+      "architecture": "Ada",
+      "uuid": "GPU-8b556b54-8f53-2f85-66e9-3ae4386a789d"
+    }
+  ],
+  "cudaVersion": "12.6",
+  "writerId": "5u5db8m5lxhbfag59pm8v82xbcmpj65x"
+}

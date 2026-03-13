@@ -1,0 +1,16 @@
+{
+  "best_epoch": 19,
+  "best_val_loss": 8.390910973420015,
+  "mae_xy_radial": 1.2597684860229492,
+  "mae_dbh": 0.11525893956422806,
+  "rmse_x": 1.708199143409729,
+  "rmse_y": 2.3341190814971924,
+  "rmse_dbh": 0.1472233533859253,
+  "xy_loss_unweighted": 8.366055488586426,
+  "xy_mean_euclidean_error": 1.2597684860229492,
+  "dbh_loss_unweighted": 0.010837358422577381,
+  "xy_loss_weighted": 8.366055488586426,
+  "dbh_loss_weighted": 0.010837358422577381,
+  "total_loss": 8.376893043518066,
+  "loss": 8.376893533242715
+}

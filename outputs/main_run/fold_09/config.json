@@ -1,0 +1,82 @@
+{
+  "data": {
+    "train_trees_dir": "out/ecosense/final_trees",
+    "train_labels_csv": "out/ecosense/final_trees.csv",
+    "test_trees_dir": null,
+    "test_labels_csv": null,
+    "id_col": "full_id",
+    "x_col": "x",
+    "y_col": "y",
+    "dbh_col": "diameter_m",
+    "use_is_bh_window": true,
+    "ground_percentile": 2.0,
+    "terrain_mode": "quantile",
+    "terrain_path": null,
+    "bh_min_z": 1.2,
+    "bh_max_z": 1.4,
+    "min_bh_points_for_origin": 20,
+    "max_points": 1200,
+    "bh_fraction_cap": 0.5,
+    "enable_flip_x": true,
+    "enable_flip_y": true,
+    "p_flip_x": 0.5,
+    "p_flip_y": 0.5,
+    "ignore_unmatched_labels": true,
+    "ignore_unmatched_files": true,
+    "n_splits": 10,
+    "cv_seed": 42,
+    "shuffle_folds": true
+  },
+  "model": {
+    "model_name": "pointnet_conv",
+    "in_channels": 4,
+    "out_channels": 3,
+    "pointnet_feat_dims": [
+      64,
+      64,
+      64,
+      128,
+      1024
+    ],
+    "pointnet_head_dims": [
+      512,
+      256
+    ],
+    "pointnet_dropout": 0.3,
+    "pointnet_use_bn": true,
+    "pointnet_use_input_transform": false,
+    "pointnet_use_feature_transform": false,
+    "pointconv_hidden_dim": 128,
+    "pointconv_layers": 3,
+    "pointconv_k": 32,
+    "pointconv_dropout": 0.1,
+    "pointconv_use_bn": true,
+    "pointconv_head_dims": [
+      256,
+      128
+    ]
+  },
+  "train": {
+    "output_dir": "outputs/main_run",
+    "batch_size": 32,
+    "num_workers": 8,
+    "epochs": 300,
+    "lr": 0.001,
+    "weight_decay": 0.0001,
+    "seed": 42,
+    "device": "auto",
+    "xy_weight": 1.0,
+    "dbh_weight": 1.0,
+    "smooth_l1_beta": 1.0,
+    "use_wandb": true,
+    "wandb_project": "tree_dbh_workstation",
+    "wandb_entity": "skreidl",
+    "wandb_run_name": "claude_optim_run_300_1200",
+    "wandb_tags": [],
+    "wandb_mode": "online",
+    "wandb_watch_model": true,
+    "save_history": true,
+    "save_best_model": true,
+    "early_stopping_patience": 30
+  }
+}

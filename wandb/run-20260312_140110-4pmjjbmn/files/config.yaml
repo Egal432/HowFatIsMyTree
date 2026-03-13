@@ -1,0 +1,137 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            idk3gktnzov1gb2gzjo73jdoghdmfrd8:
+                codePath: src/train.py
+                codePathLocal: src/train.py
+                cpu_count: 16
+                cpu_count_logical: 32
+                cudaVersion: "12.6"
+                disk:
+                    /:
+                        total: "1081101176832"
+                        used: "24539475968"
+                email: stephan.kreidl.1999@googlemail.com
+                executable: /home/humax_laserscan/miniconda/envs/uavproc_gpu/bin/python
+                git:
+                    commit: cd2fd35b87080a050e6db90d9505f6df86187939
+                    remote: git@github.com:Egal432/HowFatIsMyTree.git
+                gpu: NVIDIA GeForce RTX 4090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      memoryTotal: "25757220864"
+                      name: NVIDIA GeForce RTX 4090
+                      uuid: GPU-8b556b54-8f53-2f85-66e9-3ae4386a789d
+                host: IWW156
+                memory:
+                    total: "67345616896"
+                os: Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.39
+                program: /mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree/src/train.py
+                python: CPython 3.11.14
+                root: /mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree
+                startedAt: "2026-03-12T13:01:10.308560Z"
+                writerId: idk3gktnzov1gb2gzjo73jdoghdmfrd8
+        m: []
+        python_version: 3.11.14
+        t:
+            "1":
+                - 1
+                - 5
+                - 53
+                - 77
+            "2":
+                - 1
+                - 5
+                - 53
+                - 77
+            "3":
+                - 1
+                - 2
+                - 13
+                - 15
+                - 16
+                - 61
+                - 62
+            "4": 3.11.14
+            "5": 0.25.1
+            "12": 0.25.1
+            "13": linux-x86_64
+data:
+    value:
+        bh_fraction_cap: 0.5
+        bh_max_z: 1.4
+        bh_min_z: 1.2
+        cv_seed: 42
+        dbh_col: diameter_m
+        enable_flip_x: true
+        enable_flip_y: true
+        ground_percentile: 2
+        id_col: full_id
+        ignore_unmatched_files: true
+        ignore_unmatched_labels: true
+        max_points: 2048
+        min_bh_points_for_origin: 20
+        n_splits: 5
+        p_flip_x: 0.5
+        p_flip_y: 0.5
+        shuffle_folds: true
+        terrain_mode: quantile
+        terrain_path: null
+        test_labels_csv: /mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree/datasets/Mathisleweiher/trees_valid/dbh_valid_fixed.csv
+        test_trees_dir: /mnt/e/01_UAV_Frey_Group_3/HowFatIsMyTree/datasets/Mathisleweiher/trees_valid
+        train_labels_csv: out/ecosense/final_trees.csv
+        train_trees_dir: out/ecosense/final_trees
+        use_is_bh_window: false
+        x_col: x
+        y_col: "y"
+model:
+    value:
+        in_channels: 4
+        model_name: pointnet_conv
+        out_channels: 3
+        pointconv_dropout: 0.1
+        pointconv_head_dims:
+            - 256
+            - 128
+        pointconv_hidden_dim: 128
+        pointconv_k: 32
+        pointconv_layers: 3
+        pointconv_use_bn: true
+        pointnet_dropout: 0.3
+        pointnet_feat_dims:
+            - 64
+            - 64
+            - 64
+            - 128
+            - 1024
+        pointnet_head_dims:
+            - 512
+            - 256
+        pointnet_use_bn: true
+        pointnet_use_feature_transform: false
+        pointnet_use_input_transform: false
+train:
+    value:
+        batch_size: 8
+        dbh_weight: 1
+        device: auto
+        early_stopping_patience: 30
+        epochs: 300
+        lr: 0.001
+        num_workers: 8
+        output_dir: outputs/Last_Run
+        save_best_model: true
+        save_history: true
+        seed: 42
+        smooth_l1_beta: 1
+        use_wandb: true
+        wandb_entity: skreidl
+        wandb_mode: online
+        wandb_project: tree_dbh_test
+        wandb_run_name: Last_Try
+        wandb_tags: []
+        wandb_watch_model: true
+        weight_decay: 0.0001
+        xy_weight: 1
